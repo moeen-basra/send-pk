@@ -1,0 +1,28 @@
+{
+  "name": "moeen-basra/send-pk",
+  "description": "Send SMS via SendPk",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Moeen Basra",
+      "email": "m.basra@live.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "guzzlehttp/guzzle": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "MoeenBasra\\SendPk\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "MoeenBasra\\SendPk\\SendPkServiceProvider"
+      ]
+    }
+  }
+}
