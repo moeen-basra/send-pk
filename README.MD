@@ -28,7 +28,8 @@ The package for [laravel](https://laravel.com/) to send sms messages using the s
 use MoeenBasra\SendPk\SmsMessage
 
 class MyClass {
-    sendMessage() {
+    public function sendMessage(): void
+    {
         $response = (new SmsMessage())
             ->fields('template_id', confg('send-pk.templates.{my_template_id}'))
             ->fields('message', [
@@ -49,7 +50,8 @@ class MyClass {
 <?php
 
 class MyClass {
-    sendMessage() {
+    public function sendMessage(): void
+    {
         $response = app('send-pk')
             ->send($phone_number, [
                 'template_id' => confg('send-pk.templates.{my_template_id}'),
