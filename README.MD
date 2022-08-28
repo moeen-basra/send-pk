@@ -20,6 +20,7 @@ The package for [laravel](https://laravel.com/) to send sms messages using the s
 
 ## How to use
 
+Before moving forward make sure you update the `config/send-pk.php` file.
 
 ### Using the SmsMessage
 ```php
