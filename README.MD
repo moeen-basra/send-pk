@@ -1,4 +1,4 @@
-# SendPK (Be Aware they have a fucking server)
+# SendPK (Be Aware they have a fucking shit server)
 
 The package for [laravel](https://laravel.com/) to send sms messages using the send pk
 
