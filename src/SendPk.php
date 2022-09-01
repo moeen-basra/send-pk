@@ -60,32 +60,26 @@ class SendPk
                 'form_params' => $params,
             ]);
 
-            try {
-                [, $message_id] = preg_split('/^OK ID:/', $response->getBody()->getContents());
+            $data = [
+                'from' => $this->sender,
+                'to' => $to,
+                'params' => $params,
+            ];
 
-                $data = [
-                    'from' => $this->sender,
-                    'to' => $to,
-                    'id' => $message_id,
-                    'params' => $params,
-                ];
+            $content = $response->getBody()->getContents();
 
-                return new Response($data);
-
-            } catch (\Throwable $throwable) {
-                throw new SendPkException($throwable->getMessage(), $throwable->getCode(), $throwable);
+            if (str_starts_with($content, 'OK')) {
+                $status = 'Success!';
+                [, $message] = preg_split('/^OK ID:/', $content);
+            } else {
+                $status = 'Failed!';
+                $message = str_split($content, ':')[0];
             }
+            $data['status'] = $status;
+            return new Response($data);
 
-//            $res = json_decode($response->getBody()->getContents(), true);
-//
-//            $data = array_merge($res, [
-//                'from' => $this->sender,
-//                'to' => $to,
-//                'params' => params
-//            ]);
-
-        } catch (Throwable $throwable) {
-            throw new SendPkException(__('send-pk::messages.sending.failed'), $throwable->getCode(), $throwable);
+        } catch (\Throwable $throwable) {
+            throw new SendPkException($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 

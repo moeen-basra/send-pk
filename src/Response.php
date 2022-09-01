@@ -10,26 +10,22 @@ class Response implements Arrayable
 {
     public int $code;
     public string $status;
+    public string $message;
     public ?string $id = null;
     public string $from;
     public string $to;
-    public ?int $cost = null;
-    public ?int $balance = null;
-    public array $data;
 
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-
-        $this->status = Arr::get($data, 'success') === 'true' ? 'Success' : 'Failed';
-        $this->code = ($this->status === 'Success') ? 200 : 400;
-        $this->from = Arr::get($data, 'from');
-        $this->to = Arr::get($data, 'to');
+    public function __construct(
+        private readonly array $data
+    ) {
+        $this->message = Arr::get($this->data, 'message');
+        $this->status = Arr::get($this->data, 'status');
+        $this->code = $this->status === 'Success' ? 200 : 400;
+        $this->from = Arr::get($this->data, 'from');
+        $this->to = Arr::get($this->data, 'to');
 
         if ($this->code === 200) {
-            $this->id = $this->parseId();
-            $this->cost = (int)Arr::get($data, 'totalprice');
-            $this->balance = $this->parseBalance();
+            $this->id = $this->message;
         }
     }
 
@@ -38,18 +34,16 @@ class Response implements Arrayable
         return [
             'code' => $this->code,
             'status' => $this->status,
+            'message' => $this->message,
             'id' => $this->id,
             'from' => $this->from,
             'to' => $this->to,
-            'cost' => $this->cost,
-            'balance' => $this->balance,
             'data' => $this->data,
         ];
     }
 
     private function parseId(): ?string
     {
-//        return Arr::get($this->data, 'results.0.messageid');
         return Arr::get($this->data, 'id');
     }
 
